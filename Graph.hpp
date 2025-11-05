@@ -1,3 +1,8 @@
+// Diego Costoso - 801199097
+// Asignación grafos 
+// CCOM3034 - Data Structures
+
+
 #include <iostream>
 #include <vector>
 #include <stdexcept>
@@ -33,15 +38,26 @@ public:
     // Implementar!! 
     // Devuelve la cantidad de aristas
     int numEdges() const {
-        return 0;
+        int ctr = 0; // Initialize ctr at 0
+        for ( int i = 0; i < numVertices; i++ ){ 
+            for ( int j = 0; j < numVertices; j++ ){
+                ctr += adjMatrix[i][j]; // Add all "aristas" in column/row
+            }
+        }
+        return ctr; // return sum
     }
 
     // Completa esta función
     // Devuelve el in-degree de un vertice
     int inDegree(int u) const {
         if (u < 0 || u >= numVertices)
-            throw std::out_of_range("Vertice fuera de rango");
+            throw std::out_of_range("Vertice fuera de rango"); // error precaution 
         else {
+            int deg_ctr = 0; 
+            for ( int i = 0; i < numVertices; i++ ){
+                deg_ctr += adjMatrix[i][u]; // add the in-degree connected to u
+            }
+            return deg_ctr; // return the total amount
         }
     }
 
@@ -50,6 +66,17 @@ public:
     // En caso de que haya varios nodos que tengan el mayor inDegree,
     // devuelve true si u es uno de ellos
     bool isInfluencer(int u) const  {
+        if (u < 0 || u >= numVertices)
+            throw std::out_of_range("Vertice fuera de rango"); // error precaution 
+        else {
+            int target = inDegree(u); // reserve In-degree value of u in variable
+            int may_deg = target; // reserve In-degree value of u in variable in max variable for comparison 
+            for (int i = 0; i < numVertices; i++){
+                int deg_ver = inDegree(i);
+                if ( deg_ver > may_deg ) may_deg = deg_ver; // compare every possibility until finding the higher degree vertice. save to max variable if higher
+            }
+            return target == may_deg; // if both target and max degree found are equal, return true. 
+        }
     }
 };
 
